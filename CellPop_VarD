@@ -1,0 +1,20 @@
+function CellPopPlot(acc) {
+
+var Cluster = [$('#CPV_Cluster'].val()];
+
+var ClusterKey = [$('#CPV_ClusterKey'].val()];
+
+var ConditionKey = [$('#CPV_ConditionKey'].val()];
+
+var Cond1 = [$('#CPV_C1'].val()];
+
+var Cond2 = [$('#CPV_C2'].val()];
+
+var D = {'method':'CPV',
+		'dataset': window.store.getState().config.displayNames.dataset+'.h5ad',
+		'Cluster':Cluster,
+		'ClusterKey':ClusterKey,
+		'ConditionKey':ConditionKey,
+		'Cond1':Cond1,
+		'Cond2':Cond2;
+}
