@@ -2,15 +2,14 @@
       <div id="CellPopInput">
         <h3>For a given cell population, compare gene expression between two conditions</h3>
         <p>Select Cell Population Annotation:
-        <select id="CPV_ClusterKey"></select></p>
+	<input type="text" id="CPV_ClusterKey"></p>
         <p>Select a Cell Population:
-        <select id="CPV_Cluster"></select></p>
+        <input type="text" id="CPV_Cluster"></p>
     <p>Select Condition Annotation:
-        <select id="CPV_ConditionKey"></select></p>
+        <input type="text" id="CPV_ConditionKey"></p>
 	  <p>Select Condition 1:
-        <select id="CPV_C1"></select></p>
+        <input type="text" id="CPV_C1"></p>
         <p>Select Condition 2:
-        <select id="Condition2"></select></p>
-        <p id="CPV_C2"></p>
+        <input type="text" id="CPV_C2"></p>
       </div>
     </div><!--CellPopView-->
