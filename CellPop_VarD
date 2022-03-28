@@ -1,5 +1,12 @@
 function CellPopPlot(acc) {
 
+$('#CPVnote').text("");
+
+if($("#CPV_Cluster").val()==null){
+    $('#SGVnote').text("Please provide input data);
+    return;
+  }
+
 var Cluster = [$('#CPV_Cluster'].val()];
 
 var ClusterKey = [$('#CPV_ClusterKey'].val()];
@@ -17,10 +24,11 @@ var D = {'method':'CPV',
 		'ConditionKey':ConditionKey,
 		'Cond1':Cond1,
 		'Cond2':Cond2;
+		}
 		
  $.ajax({
     type:"POST",
     url: VIPurl,
     data:JSON.stringify(D),
     contentType: 'application/json;charset=UTF-8',//
-}
+})
