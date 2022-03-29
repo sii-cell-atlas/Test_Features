@@ -1,34 +1,19 @@
-function CellPopPlot(acc) {
+function CellPopPlot(){
+  var CPV_CK = document.getElementById("CPV_ClusterKey").value;
+  
+  var CPV_C = document.getElementById("CPV_Cluster").value;
+  
+  var CPV_CK2 = document.getElementById("CPV_ConditionKey").value;
+  
+  var CPV_Con1 = document.getElementById("CPV_C1").value;
+  
+  var CPV_Con2 = document.getElementById("CPV_C2").value;
 
-$('#CPVnote').text("");
+  var CPVbutton = document.getElementById("CPVnote");
 
-if($("#CPV_Cluster").val()==null){
-    $('#SGVnote').text("Please provide input data);
-    return;
-  }
-
-var Cluster = [$('#CPV_Cluster'].val()];
-
-var ClusterKey = [$('#CPV_ClusterKey'].val()];
-
-var ConditionKey = [$('#CPV_ConditionKey'].val()];
-
-var Cond1 = [$('#CPV_C1'].val()];
-
-var Cond2 = [$('#CPV_C2'].val()];
-
-var D = {'method':'CPV',
-		'dataset': window.store.getState().config.displayNames.dataset+'.h5ad',
-		'Cluster':Cluster,
-		'ClusterKey':ClusterKey,
-		'ConditionKey':ConditionKey,
-		'Cond1':Cond1,
-		'Cond2':Cond2;
-		}
-		
- $.ajax({
-    type:"POST",
-    url: VIPurl,
-    data:JSON.stringify(D),
-    contentType: 'application/json;charset=UTF-8',//
-})
+  if(CPV_CK && CPV_C && CPV_C2 && CPV_Con1 && CPV_Con2) {
+    CPVbutton.innerHTML = "Imagine a Plot here";
+    return
+  } 
+    CPVbutton.innerHTML = "Input data required";
+}
