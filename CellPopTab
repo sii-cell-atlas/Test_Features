@@ -1,6 +1,6 @@
-<div id="CellPopView" class="tabcontent">
+    <div id="CellPopView" class="tabcontent">
       <div id="CellPopInput">
-        <h3>For a given cell population, compare gene expression between two conditions</h3>
+        <h3>For a given cell population, compare gene expression between two conditions:</h3>
         <p>Select Cell Population Annotation:
 	<input type="text" id="CPV_ClusterKey"></p>
         <p>Select a Cell Population:
@@ -12,4 +12,7 @@
         <p>Select Condition 2:
         <input type="text" id="CPV_C2"></p>
       </div>
+      <button class="CPVbt" onclick="CellPopPlot()"><b>Plot</b></button>
+      <p id="CPVnote" style="color:red;"></p>
+      <p id="CPVfig"></p>
     </div><!--CellPopView-->
