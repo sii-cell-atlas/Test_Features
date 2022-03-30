@@ -3,7 +3,7 @@ def CellPopView(data):
     adata = createData(data)
     
     #subset by cluster
-    adata = adata[adata.obs[data['Cluster]].isin(data['ClusterKey'])]
+    adata = adata[adata.obs[data['Cluster']].isin(data['ClusterKey'])]
     
     #Split by Condition
     adata_1 = adata[adata.obs[data['Condition_Key']].isin(data['Cond1'])]
@@ -24,12 +24,12 @@ def CellPopView(data):
     plt.scatter(Expression_1,Expression_2, label = "stars", color = "black", 
                 marker = ".",  s =30) 
     
-    plt.title('Cluster ' + str(Cluster)) 
+    plt.title('Cluster ' + data['Cluster']) 
     
     plt.grid()
     
-    plt.xlabel(Conditions[0])
-    plt.ylabel(Conditions[1], rotation = 0)
+    plt.xlabel(data['Cond1'])
+    plt.ylabel(data['Cond2'], rotation = 0)
     
-    CellPopPlot = plt.show()
+    CellPopPlot = plt.figure()
     return iostreamFig(CellPopPlot)
