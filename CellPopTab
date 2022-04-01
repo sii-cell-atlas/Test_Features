@@ -1,8 +1,11 @@
     <div id="CellPopView" class="tabcontent">
       <div id="CellPopInput">
         <h3>For a given cell population, compare gene expression between two conditions:</h3>
+        <p>Cell Selection:
+          <label><input class="CPVcell" type="checkbox" value="celllist1" checked/>Selection 1 (<span class="cellN1" style="color:red">0</span>)</label>
+        </p>
         <p>Select Cell Population Annotation:
-	<input type="text" id="CPV_ClusterKey"></p>
+          <input type="text" id="CPV_ClusterKey"></p>
         <p>Select a Cell Population:
         <input type="text" id="CPV_Cluster"></p>
     <p>Select Condition Annotation:
