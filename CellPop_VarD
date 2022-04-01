@@ -7,15 +7,23 @@ function CellPopPlot(){
   
   var CPV_Con1 = document.getElementById("CPV_C1").value; 
   
-  var CPV_Con2 = document.getElementById("CPV_C2").value; 
+  var CPV_Con2 = document.getElementById("CPV_C2").value;
+  
+  var cells = getCells('CPVcell');
 
-  if(CPV_CK && CPV_C && CPV_C2 && CPV_Con1 && CPV_Con2) {
+  //let grp = [...new Set(CPV_CK,CPV_CK2)];
+  let grp = [...new Set([$("#CPV_ClusterKey").val(),$("#CPV_ConditionKey").val()])];
+
+  if(CPV_CK && CPV_C && CPV_C2 && CPV_Con1 && CPV_Con2 && cells) {
     
     var D = {'method':'CPV',
 		'dataset': window.store.getState().config.displayNames.dataset+'.h5ad',
 		'Cluster':CPV_C,
 		'ClusterKey':CPV_CK,
 		'ConditionKey':CPV_CK2,
+    'cells':cells,
+    'genes':[],
+    'grp':grp,
 		'Cond1':CPV_Con1,
 		'Cond2':CPV_Con2};
 
@@ -33,6 +41,11 @@ function CellPopPlot(){
     error: function() {
       $("#CPVnote").text('Plotting Error!');
     }
+})
+return
+  } 
+    $("#CPVnote").text('Input data required');  
+}
 })
   } 
     $("#CPVnote").text('Input data required');  
