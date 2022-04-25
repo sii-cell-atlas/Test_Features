@@ -1,0 +1,124 @@
+function CellPopTable(){
+  
+  var CPV_CK = document.getElementById("CPV_ClusterKey").value; 
+  
+  var CPV_C = document.getElementById("CPV_Cluster").value; 
+  
+  var CPV_CK2 = document.getElementById("CPV_ConditionKey").value; 
+  
+  var CPV_Con1 = document.getElementById("CPV_C1").value; 
+  
+  var CPV_Con2 = document.getElementById("CPV_C2").value;
+  
+  var cells = getCells('CPVcell');
+
+  //let grp = [...new Set(CPV_CK,CPV_CK2)];
+  let grp = [...new Set([$("#CPV_ClusterKey").val(),$("#CPV_ConditionKey").val()])];
+
+  if(CPV_CK && CPV_C && CPV_C2 && CPV_Con1 && CPV_Con2 && cells) {
+    
+    var D = {'method':'CPVTable',
+		'dataset': window.store.getState().config.displayNames.dataset+'.h5ad',
+		'Cluster':CPV_C,
+		'ClusterKey':CPV_CK,
+		'ConditionKey':CPV_CK2,
+    'cells':cells,
+    'genes':[],
+    'grp':grp,
+		'Cond1':CPV_Con1,
+		'Cond2':CPV_Con2};
+    $(".CPVTablebt").prop("disabled",true);
+    $(".CPVbt").prop("disabled",true);
+    document.getElementById("CPVspin").style.visibility="visible";
+    
+    $.ajax({
+    type:"POST",
+    url: VIPurl,
+    data:JSON.stringify(D),
+    contentType: 'application/json;charset=UTF-8',//
+    success: function(res){
+      $(".CPVTablebt").prop("disabled",false);
+      $(".CPVbt").prop("disabled",false);
+      document.getElementById("CPVspin").style.visibility="hidden";
+
+
+      resTable = res; 
+      resTable = JSON.stringify(resTable);
+      resTable = resTable.split("\\n");
+      resTable = resTable.join('\n');
+      resTable = resTable.replace(/\\/g, '');
+      resTable = resTable.replace(/"/g,"");
+      
+      var gInfo = resTable.split("\n")[0].split(',').slice(4);
+      
+      var tableD = d3.csvParse(resTable,function(data){
+        return [].concat([data.gene,
+                  (+data.log2fc).toFixed(2),
+                  (+data.pval).toExponential(2),
+                  (+data.qval).toExponential(2)],
+                  Object.values(data).slice(4));
+        });
+      
+      
+      var tableTitle = [];
+      [].concat(['Gene',"Log Fold Change","p-value","padj"],gInfo).forEach(function(d){tableTitle = tableTitle.concat({title:d})});
+      var table = $('#CPVdatatable').DataTable({
+        destroy: true,
+        dom:'Blfrtip',
+        lengthMenu:[[10,50,100,200],[10,50,100,200]],
+        order:[3,"asc"],
+        buttons:['csv', {
+          extend:'csv',
+          text:'GOA',
+          exportOptions: {
+            columns: 0
+          },
+          customize: function(csv) {
+            csv = csv.replace(/"/g, '');
+            var csv_split = csv.split("\n");
+            csv_split.shift();
+
+            var geneList = [];
+
+            for (element of csv_split) {
+              //console.log(element);
+              element = element.replace("-","_");
+              element = element.split('.')[0];
+              //console.log(element);
+              geneList.push(element);
+            }
+
+            var url = "https://plasmodb.org/plasmo/app/search?q=";
+
+            var top_10 = geneList.slice(0, 10);
+
+            for (element of top_10) {
+
+              url = url.concat("+",element);
+              //console.log(url);
+
+            }
+
+            window.open(url);
+
+            var new_csv = geneList.join()
+            return geneList;
+          }
+        }],
+        data:tableD,
+        columns:tableTitle
+      });
+
+  
+    },
+    error: function() {
+      $("#CPVnote").text('Table Error!');
+    }
+})
+return
+  } 
+    $("#CPVnote").text('Input data required');
+    document.getElementById("CPVfig").innerHTML = "";
+    $('#CPVdatatable').empty();
+
+}
