@@ -25,14 +25,8 @@ PlotSmoothers <- function(models,
                                       plotLineages = TRUE)
 {
 
-  #print("model tests")
-  #print(models)
-  #print(head(names(models)))
-
-  #print("count test")
   counts = as.matrix(counts)
-  #print(counts[0:10])
-
+  
   if (is.null(names(models))) {
     rownames(models) <- rownames(counts) <- seq_len(nrow(models))
     #print("in the is.null loop for some reason")
@@ -45,34 +39,18 @@ PlotSmoothers <- function(models,
                             "gene argument.")
   # check if all gene IDs provided are present in the models object.
   if (is(gene, "character")) {
-    #print("gene-character test")
-    #print((is(gene, "character")))
-    #print(gene)
-    #print("gene-in-names test")
-    #print(gene %in% names(models))
-    #print(head(names(models)))
+
     if (!all(gene %in% names(models))) {
       stop("The gene ID is not present in the models object.")
     }
-    #id <- which(names(models) %in% gene)
-    #print("which names in gene test")
-    #print(which(names(models) %in% gene)) - evaluates to '/n', breaking pipeline
-    #print(names(models) %in% gene) - shows that there is a TRUE value
+   
     id = gene
   } else id <- gene
   
-  #print(id)
-  #print("id-in-models test")
-  #print(id %in% names(models))
 
   dm <- colData(models)$tradeSeq$dm # design matrix
-  #y <- unname(counts[names(models),][id,]) # new problem line
-  #print("y test")
-  #print(head(y))
-
-  y <- read.csv("/home/ed/CXG_Testing/testTbCounts.csv")
-
-  #print(type(y))
+  y <- unname(counts[names(models),][id,]) 
+  
 
   X <- colData(models)$tradeSeq$X # linear predictor
   slingshotColData <- colData(models)$slingshot
@@ -123,13 +101,6 @@ PlotSmoothers <- function(models,
                    "lineage" = as.character(lcol))
   
   
-  #print("df test")
-
-  gene_count = y
-
-  #print(head(gene_count))
-
-  
   
   # Reorder curves according to the levels of conditions
   combs <- paste0("Lineage ", seq_len(nLineages), "_")
@@ -139,13 +110,7 @@ PlotSmoothers <- function(models,
   rows <- sample(seq_len(nrow(df)), nrow(df) * sample, replace = FALSE)
   df <- df[rows, ]
 
- # print("rename x -> gene_counts")
-  names(df)[names(df) == "x"] <- "gene_count"
-
-  #print("df test")
-  #print(head(df))
-
-  #print("break_point - basic plot")
+  # Create Basic Plot
 
   p <- ggplot(df, aes(x = time, y = log1p(gene_count))) +
     labs(x = xlab, y = ylab) +
@@ -161,9 +126,9 @@ PlotSmoothers <- function(models,
       labs(col = "Cell labels")
   }
   
-  #print("break_point - smoothers")
 
-  # predict and plot smoothers across the range
+  # Predict and plot smoothers across the range
+
   if (plotLineages) {
     if (!is.null(curvesCols)) {
       if (length(curvesCols) != nLineages * nConditions) {
@@ -200,14 +165,6 @@ PlotSmoothers <- function(models,
       }
     }
   }
-
- 
-  #print("end of function")
-
-  #print("plot test")
-  #print(exists(p))
-
-  #print(p)
 
   return(p)
 }
@@ -676,7 +633,7 @@ gene1 = paste("Tbrucei---", args[2], sep="")
 
 sce = readRDS("/home/ed/CXG_Testing/sce_GAM_line.rds")
 
-counts = read.csv("/home/ed/CXG_Testing/tbcounts.csv")
+counts = read.csv("/home/ed/CXG_Testing/tbcounts.csv",row.names=1)
 
 tempFig = "/home/ed/CXG_Testing/tempFig.png"
 
@@ -690,3 +647,6 @@ fig = base64enc::dataURI(file = tempFig, mime = "image/png")
 cat(gsub("data:image/png;base64,","",fig))
 
 a <- file.remove(tempFig)
+  
+
+
